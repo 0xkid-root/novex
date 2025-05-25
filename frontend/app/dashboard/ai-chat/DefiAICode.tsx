@@ -363,9 +363,9 @@ export default function AiChatPage() {
           <div className="flex items-center gap-3 mb-4 sm:mb-0">
             <Brain className="h-8 w-8 text-purple-400" aria-hidden="true" />
             <div>
-              <h1 className="text-3xl font-bold text-white">Novex AI Assistant</h1>
-              <p className="text-gray-400 flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-purple-400" aria-hidden="true" />
+              <h1 className="text-4xl font-bold text-white mb-2 bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent">Novex AI Assistant</h1>
+              <p className="text-gray-300 flex items-center gap-2 text-lg mt-1 font-medium">
+                <Sparkles className="h-5 w-5 text-purple-400 animate-pulse" aria-hidden="true" />
                 Powered by real-time market intelligence
               </p>
             </div>

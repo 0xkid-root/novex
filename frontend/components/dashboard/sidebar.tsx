@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { useWallet } from "@/contexts/WalletContext"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { useState } from "react"
@@ -26,15 +27,16 @@ interface DashboardSidebarProps {
   setOpen: (open: boolean) => void
 }
 
-// Mock user data - replace with real data
-const userData = {
-  name: "Alex Johnson",
-  walletAddress: "0x742d...4A8e",
-  fullWalletAddress: "0x742d35Cc6354C7A8e8A8e4A8e4A8e4A8e4A8e4A8e",
-  balance: "1,234.56 ETH"
+// Get wallet data from context
+
+const truncateAddress = (address?: string | null) => {
+  if (!address) return ""
+  return `${address.slice(0, 4)}...${address.slice(-4)}`
 }
 
 export function DashboardSidebar({ open, setOpen }: DashboardSidebarProps) {
+  const { connectWallet, disconnectWallet, connected, connecting,publicKey } = useWallet()
+
   const pathname = usePathname()
   const [copiedAddress, setCopiedAddress] = useState(false)
 
@@ -78,8 +80,9 @@ export function DashboardSidebar({ open, setOpen }: DashboardSidebarProps) {
   ]
 
   const copyWalletAddress = async () => {
+    if (!publicKey) return
     try {
-      await navigator.clipboard.writeText(userData.fullWalletAddress)
+      await navigator.clipboard.writeText(publicKey)
       setCopiedAddress(true)
       setTimeout(() => setCopiedAddress(false), 2000)
     } catch (err) {
@@ -306,55 +309,80 @@ export function DashboardSidebar({ open, setOpen }: DashboardSidebarProps) {
                   exit="collapsed"
                   className="space-y-3"
                 >
-                  {/* User Info */}
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-cyan-400 flex items-center justify-center shadow-lg">
-                      <User className="h-5 w-5 text-white" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-white dark:text-gray-100 truncate">{userData.name}</p>
-                      <p className="text-xs text-gray-400 dark:text-gray-300">{userData.balance}</p>
-                    </div>
-                  </div>
+                  {connected && publicKey ? (
+                    <>
+                      {/* Connected User Info */}
+                      <div className="flex items-center space-x-3">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-cyan-400 flex items-center justify-center shadow-lg">
+                          <User className="h-5 w-5 text-white" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs text-gray-400 dark:text-gray-300">Connected</p>
+                        </div>
+                      </div>
 
-                  {/* Wallet Address */}
-                  <motion.div
-                    className="flex items-center justify-between bg-white/5 dark:bg-gray-900/50 rounded-lg p-2 border border-white/10 dark:border-gray-700 cursor-pointer hover:bg-white/10 dark:hover:bg-gray-800/50 transition-colors"
-                    onClick={copyWalletAddress}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <div className="flex items-center space-x-2">
-                      <Wallet className="h-4 w-4 text-gray-400 dark:text-gray-300" />
-                      <span className="text-xs text-gray-300 dark:text-gray-200 font-mono">{userData.walletAddress}</span>
-                    </div>
-                    <motion.div
-                      animate={{ rotate: copiedAddress ? 360 : 0 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <Copy className={cn("h-4 w-4 transition-colors", copiedAddress ? "text-cyan-400" : "text-gray-400 dark:text-gray-300")} />
-                    </motion.div>
-                  </motion.div>
+                      {/* Wallet Address */}
+                      <motion.div
+                        className="flex items-center justify-between bg-white/5 dark:bg-gray-900/50 rounded-lg p-2 border border-white/10 dark:border-gray-700 cursor-pointer hover:bg-white/10 dark:hover:bg-gray-800/50 transition-colors"
+                        onClick={copyWalletAddress}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <div className="flex items-center space-x-2">
+                          <Wallet className="h-4 w-4 text-gray-400 dark:text-gray-300" />
+                          <span className="text-xs text-gray-300 dark:text-gray-200 font-mono">{truncateAddress(publicKey)}</span>
+                        </div>
+                        <motion.div
+                          animate={{ rotate: copiedAddress ? 360 : 0 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <Copy className={cn("h-4 w-4 transition-colors", copiedAddress ? "text-cyan-400" : "text-gray-400 dark:text-gray-300")} />
+                        </motion.div>
+                      </motion.div>
 
-                  {/* Action Buttons */}
-                  <div className="flex space-x-2">
-                    <motion.button
-                      className="flex-1 flex items-center justify-center space-x-1 py-2 px-3 bg-white/10 dark:bg-gray-800/30 hover:bg-white/20 dark:hover:bg-gray-700/50 rounded-lg transition-colors text-xs text-gray-300 dark:text-gray-200 border border-white/10 dark:border-gray-700"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <Bell className="h-3 w-3" />
-                      {open && <span>Alerts</span>}
-                    </motion.button>
-                    <motion.button
-                      className="flex-1 flex items-center justify-center space-x-1 py-2 px-3 bg-pink-500/10 dark:bg-pink-600/10 hover:bg-pink-500/20 dark:hover:bg-pink-600/20 rounded-lg transition-colors text-xs text-pink-300 dark:text-pink-200 border border-pink-500/20 dark:border-pink-600/20"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <LogOut className="h-3 w-3" />
-                      {open && <span>Logout</span>}
-                    </motion.button>
-                  </div>
+                      {/* Action Buttons */}
+                      <div className="flex space-x-2">
+                        <motion.button
+                          className="flex-1 flex items-center justify-center space-x-1 py-2 px-3 bg-white/10 dark:bg-gray-800/30 hover:bg-white/20 dark:hover:bg-gray-700/50 rounded-lg transition-colors text-xs text-gray-300 dark:text-gray-200 border border-white/10 dark:border-gray-700"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          <Bell className="h-3 w-3" />
+                          {open && <span>Alerts</span>}
+                        </motion.button>
+                        <motion.button
+                          onClick={disconnectWallet}
+                          className="flex-1 flex items-center justify-center space-x-1 py-2 px-3 bg-pink-500/10 dark:bg-pink-600/10 hover:bg-pink-500/20 dark:hover:bg-pink-600/20 rounded-lg transition-colors text-xs text-pink-300 dark:text-pink-200 border border-pink-500/20 dark:border-pink-600/20"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          <LogOut className="h-3 w-3" />
+                          {open && <span>Disconnect</span>}
+                        </motion.button>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="flex flex-col space-y-3">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400/50 to-cyan-400/50 flex items-center justify-center shadow-lg">
+                          <User className="h-5 w-5 text-white/50" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs text-gray-400 dark:text-gray-300">Not Connected</p>
+                        </div>
+                      </div>
+                      <motion.button
+                        onClick={connectWallet}
+                        disabled={connecting}
+                        className="w-full flex items-center justify-center space-x-2 py-2 px-3 bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 rounded-lg transition-colors text-xs text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <Wallet className="h-4 w-4" />
+                        <span>{connecting ? "Connecting..." : "Connect Wallet"}</span>
+                      </motion.button>
+                    </div>
+                  )}
                 </motion.div>
               ) : (
                 <motion.div

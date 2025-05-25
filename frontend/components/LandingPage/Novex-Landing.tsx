@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from 'react'
+import { useWallet } from "@/contexts/WalletContext"
 import Link from 'next/link'
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { Menu, X, ArrowRight, Zap, Shield, TrendingUp, BarChart3, Cpu, Globe, Sparkles, ChevronDown, Twitter, Github, Play, Users, Award, Target, Eye, Brain } from 'lucide-react'
@@ -9,6 +10,8 @@ import { cn } from '@/lib/utils'
 
 const NovexLanding = () => {
   const [activeSection, setActiveSection] = useState('hero')
+  const { connectWallet,  connected, connecting } = useWallet()
+
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { scrollY } = useScroll()
 
@@ -117,14 +120,20 @@ const NovexLanding = () => {
               transition={{ delay: 1, duration: 0.8 }}
             >
               <Button
-                asChild
                 size="lg"
                 className="group px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full font-semibold flex items-center gap-3 hover:from-purple-500 hover:to-pink-500 transition-all duration-300"
+                onClick={async () => {
+                  if (!connected) {
+                    await connectWallet()
+                  }
+                  if (connected) {
+                    window.location.href = '/dashboard'
+                  }
+                }}
+                disabled={connecting}
               >
-                <Link href="/dashboard">
-                  Launch Dashboard
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
+                {connecting ? "Connecting..." : connected ? "Launch Dashboard" : "Connect Wallet"}
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
 
               <Button

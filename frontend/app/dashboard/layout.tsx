@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from "react"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { DashboardSidebar } from "@/components/Dashboard/sidebar"
+import { DashboardSidebar } from "@/components/dashboard/sidebar"
 
 export default function DashboardLayout({
   children,

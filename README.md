@@ -1,45 +1,119 @@
-# Astra ✨
+# **Novex: AI-Powered DeFi Trading Copilot on Solana and Ethereum**
 
-> Your AI-powered copilot for DeFi trading on Solana
-
-## Overview 🌐
-
-Astra is an intelligent trading assistant that harnesses the power of artificial intelligence and Solana's high-performance blockchain to transform the DeFi experience. As your personal trading copilot, Astra elevates your trading strategy by simplifying complex operations, identifying prime opportunities, and executing transactions with unparalleled efficiency.
-
-## Core Features 🚀
-
-- **AI-Powered Trading Intelligence** - Advanced algorithms provide data-driven suggestions for optimal trade entry and exit points
-- **Seamless Multi-DEX Execution** - Execute token swaps across multiple decentralized exchanges with minimal friction
-- **Comprehensive Portfolio Analysis** - Gain powerful insights about your holdings, performance metrics, and risk exposure
-- **Intelligent Gas Optimization** - Sophisticated timing mechanisms determine optimal transaction execution to minimize fees
-- **Real-time Market Sentiment Analysis** - Leverage cutting-edge NLP to analyze market trends and sentiment indicators
-- **Cross-Chain Compatibility** - Operate seamlessly across Solana and other compatible blockchain networks
-- **Intuitive Interface** - Clean, professional dashboard suitable for both novice and sophisticated traders
-
-## Technical Architecture 🔧
-
-Astra employs a robust technical foundation designed for performance, security, and exceptional user experience:
-
-- **Frontend**: React.js with Tailwind CSS for responsive design
-- **AI Engine**: Custom-trained TensorFlow models with specialized trading algorithms
-- **Blockchain Layer**: Solana Web3.js for high-throughput transaction processing
-- **Integration Layer**: OKX DEX API for liquidity access and trade execution
-- **Data Services**: Pyth Network for reliable, low-latency price oracle data
-
-## Strategic Use Cases 💡
-
-1. **Algorithmic Trading** - Deploy sophisticated trading strategies that execute automatically based on predefined market conditions
-2. **Arbitrage Detection** - Identify and capitalize on price differentials across exchanges for profit opportunities
-3. **Systematic Accumulation** - Implement dollar-cost averaging strategies to build positions methodically over time
-4. **Flash Loan Strategies** - Utilize Solana's exceptional speed for complex flash loan implementations
-5. **Dynamic Portfolio Rebalancing** - Maintain optimal asset allocation through intelligent automated adjustments
-
-## Acknowledgements 🤝
-
-- Solana Foundation for their revolutionary blockchain infrastructure
-- OKX DEX team for their comprehensive trading API ecosystem
-- Solana Accelerate Hackathon organizers and mentors for their vision and support
+### Submission for OKX Hackathon
 
 ---
 
-Developed for the OKX Solana Accelerate Hackathon 2025
+## 🚀 Overview
+
+**Novex** is an AI-powered DeFi trading assistant designed to enhance decentralized trading on both **Solana** and **Ethereum**. Leveraging **TensorFlow-based intelligence**, **ERC-4337 account abstraction**, and integrations with **OKX DEX API** and **Galess Swap API**, Novex delivers a seamless, high-performance, and user-centric trading experience.
+
+Novex acts as your **personal DeFi copilot**, enabling sophisticated strategy execution, smart portfolio management, and optimized trade execution—all with minimal friction.
+
+---
+
+## 🌟 Key Features
+
+* **🤖 AI-Powered Trade Intelligence**
+  Advanced TensorFlow models deliver real-time recommendations for optimal trade entry and exit points based on market signals.
+
+* **🔄 Multi-DEX Execution**
+  Execute token swaps across decentralized exchanges via OKX DEX API and Galess Swap API to ensure the best prices and liquidity.
+
+* **📊 Portfolio Insights**
+  Analyze your assets with real-time performance metrics, risk analysis, and visual breakdowns in an intuitive dashboard.
+
+* **⛽ Intelligent Gas Optimization**
+  AI-based timing strategies reduce transaction costs on Solana and Ethereum networks.
+
+* **🧠 Market Sentiment Analysis**
+  NLP techniques analyze social media, news, and on-chain data to surface market sentiment and emerging trends.
+
+* **🔗 Cross-Chain Compatibility**
+  Trade seamlessly across Solana and Ethereum, powered by ERC-4337 for programmable, gasless transactions.
+
+* **💼 ERC-4337 Account Abstraction**
+  Enjoy gasless, delegated transactions and customizable smart wallet behavior.
+
+* **📱 Intuitive User Interface**
+  A modern, responsive interface built for both novice and experienced DeFi users.
+
+---
+
+## 🏗️ Technical Architecture
+
+**Frontend**
+
+* React.js + Tailwind CSS for clean, responsive UI
+
+**AI Engine**
+
+* TensorFlow models tailored for trade signal prediction and sentiment analysis
+
+**Blockchain Integration**
+
+* **Solana**: `@solana/web3.js` for high-speed transaction handling
+* **Ethereum**: `ethers.js` for Ethereum interactions and ERC-4337 abstraction
+
+**Data + APIs**
+
+* **OKX DEX API**: Access deep liquidity pools and efficient swaps
+* **Galess Swap API**: Cross-DEX liquidity aggregation
+* **Pyth Network**: Low-latency price oracles for reliable trade data
+
+**Account Abstraction**
+
+* Full ERC-4337 implementation enabling gasless and programmable wallet transactions
+
+---
+
+## 📈 Use Cases
+
+* **Algorithmic Trading**
+  Automate strategies based on AI-generated trade signals.
+
+* **Arbitrage Detection**
+  Exploit cross-DEX price differences with OKX + Galess routing.
+
+* **Dollar-Cost Averaging**
+  Use gasless, scheduled purchases to reduce volatility impact.
+
+* **Flash Loan Execution**
+  Combine Solana’s throughput with Ethereum’s composability for powerful flash loan strategies.
+
+* **Portfolio Rebalancing**
+  Dynamically adjust allocations based on AI-driven recommendations.
+
+---
+
+## 🔌 OKX DEX API Integration
+
+Novex deeply integrates with the **OKX DEX API** to facilitate:
+
+* Real-time access to aggregated liquidity
+* Optimized routing for token swaps with minimal slippage
+* Fast, secure, and data-driven trade execution
+
+This integration supports high-frequency, AI-driven DeFi strategies by ensuring execution speed and pricing efficiency.
+
+---
+
+## 💡 Innovation Highlights
+
+* **Galess Swap API**: Enhances multi-DEX liquidity routing, complementing OKX DEX.
+* **ERC-4337 Account Abstraction**: Enables gasless and delegated transactions with programmable wallet logic.
+* **AI-Powered Trading**: Combines real-time data with TensorFlow-driven insights for precision decision-making.
+* **Cross-Chain Operability**: Bridges Ethereum’s DeFi ecosystem with Solana’s speed and scalability.
+
+---
+
+## 🙏 Acknowledgements
+
+* **OKX DEX Team**: For the powerful API infrastructure enabling cross-DEX execution.
+* **Solana Foundation**: For providing a high-performance blockchain for real-time DeFi.
+* **Galess Swap Team**: For innovative liquidity aggregation and API design.
+* **Ethereum Community**: For driving forward ERC-4337 and smart wallet standards.
+* **Solana Accelerate Hackathon**: For motivating cross-chain DeFi innovation.
+
+---
+

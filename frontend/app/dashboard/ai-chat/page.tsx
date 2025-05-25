@@ -929,7 +929,7 @@ export default function AiChatPage() {
 
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] bg-gray-900 text-gray-100 p-4 rounded-xl">
+    <div className="flex flex-col h-[calc(100vh-4rem)] bg-gradient-to-br from-purple-900 via-blue-900 p-4 rounded-xl">
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center gap-4">
 

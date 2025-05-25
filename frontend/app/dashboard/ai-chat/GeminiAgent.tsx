@@ -1,109 +1,157 @@
-// geminiAgent.ts
 "use client";
 
+import { useState, useCallback } from "react";
 import { GoogleGenAI } from "@google/genai";
+import { Button, Input, Select, SelectItem, Card, CardBody, CardHeader, Spinner } from "@nextui-org/react";
 
+// Define prompt templates for different DeFi contexts
+const PROMPT_TEMPLATES = {
+  trading: `
+    You are a DeFi Trading Assistant specializing in blockchain data and trading insights. 
+    Respond in JSON format with clearly defined types for each response. Supported chains include: 
+    ETH, OP, BSC, OKT, SONIC, XLAYER, POLYGON, ARB, AVAX, ZKSYNC, POLYZKEVM, BASE, LINEA, FTM, 
+    MANTLE, CFX, METIS, MERLIN, BLAST, MANTA, SCROLL, CRO, ZETA, TRON, SOL, SUI, TON.
+
+    Response types:
+    - Supported chains: { type: "supported_chains", data: string[] }
+    - Token price: { type: "price", token_name: string, price: number, similar_tokens: string[] }
+    - Trades: { type: "trades", data: { token: string, amount: number, timestamp: string }[] }
+    - Candlestick data: { type: "candlestick", data: { open: number, high: number, low: number, close: number, timestamp: string }[] }
+    - Historical data: { type: "hist_data", data: { open: number, high: number, low: number, close: number, timestamp: string }[] }
+    - Recent transaction: { type: "recent_transaction", data: { tx_hash: string, token: string, amount: number } }
+    - Total balance: { type: "total_value", token_name: "MYS", data: { total: number, currency: string } }
+    - Batch token prices: { type: "batch_price", data: { token: string, price: number }[] }
+    - Total token balance: { type: "total_token_balance", data: { token: string, balance: number }[] }
+    - Specific token balance: { type: "specific_token_balance", token_name: string, data: { balance: number, address: string } }
+    - Candlestick history: { type: "candlestick_history", data: { open: number, high: number, low: number, close: number, timestamp: string }[] }
+    - Token index price: { type: "token_index_price", data: { index: string, price: number } }
+    - Historical index price: { type: "historical_index_price", data: { index: string, price: number, timestamp: string }[] }
+    - Transaction history: { type: "transaction_history", data: { tx_hash: string, amount: number, timestamp: string }[] }
+    - Transaction details: { type: "tx_by_hash", data: { tx_hash: string, details: object } }
+    - General answer: { type: "general_answer", message: string }
+
+    If a token is mentioned, include "token_name" and "similar_tokens" fields.
+    User Query: {query}
+  `,
+  portfolio: `
+    You are a DeFi Portfolio Assistant focused on token balances and portfolio analytics.
+    Respond in JSON format with types:
+    - Total balance: { type: "total_value", token_name: "MYS", data: { total: number, currency: string } }
+    - Total token balance: { type: "total_token_balance", data: { token: string, balance: number }[] }
+    - Specific token balance: { type: "specific_token_balance", token_name: string, data: { balance: number, address: string } }
+    - General answer: { type: "general_answer", message: string }
+    Supported chains: ETH, OP, BSC, OKT, SONIC, XLAYER, POLYGON, ARB, AVAX, ZKSYNC, POLYZKEVM, BASE, LINEA, FTM, MANTLE, CFX, METIS, MERLIN, BLAST, MANTA, SCROLL, CRO, ZETA, TRON, SOL, SUI, TON.
+    User Query: {query}
+  `,
+  analytics: `
+    You are a DeFi Analytics Assistant providing insights on market trends and historical data.
+    Respond in JSON format with types:
+    - Candlestick data: { type: "candlestick", data: { open: number, high: number, low: number, close: number, timestamp: string }[] }
+    - Candlestick history: { type: "candlestick_history", data: { open: number, high: number, low: number, close: number, timestamp: string }[] }
+    - Token index price: { type: "token_index_price", data: { index: string, price: number } }
+    - Historical index price: { type: "historical_index_price", data: { index: string, price: number, timestamp: string }[] }
+    - General answer: { type: "general_answer", message: string }
+    Supported chains: ETH, OP, BSC, OKT, SONIC, XLAYER, POLYGON, ARB, AVAX, ZKSYNC, POLYZKEVM, BASE, LINEA, FTM, MANTLE, CFX, METIS, MERLIN, BLAST, MANTA, SCROLL, CRO, ZETA, TRON, SOL, SUI, TON.
+    User Query: {query}
+  `,
+};
+
+// Initialize GoogleGenAI
 const ai = new GoogleGenAI({
   apiKey: process.env.NEXT_PUBLIC_GEMINI_KEY,
 });
 
-const GEMINI_PROMPT_TEMPLATE = `
-You are a blockchain data assistant knowledgeable about supported chains, token prices, trades, candlestick data, historical candlestick data, token index prices, historical index prices, total values, and token balances. You respond in JSON format with clearly defined types for each response.
+interface GeminiResponse {
+  type: string;
+  [key: string]: any;
+}
 
-When a user query involves:
+export default function DeFiAssistant() {
+  const [query, setQuery] = useState("");
+  const [template, setTemplate] = useState("trading");
+  const [response, setResponse] = useState<GeminiResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-- Supported chains: return a JSON with type "supported_chains" listing all supported blockchain chains.
-- Token price: return type "price" with current price data.
-- Trades: return type "trades" with recent trade data.
--Historical data: return type "hist_data" with OHLC data.
-- Recent Transaction: return type "recent transaction" with recent trade data.
-- Candlestick data: return type "candlestick" with OHLC data.
+  const handleQuery = useCallback(async () => {
+    if (!query.trim()) return;
+    setLoading(true);
+    setError(null);
 
--if related to Retrieve the total balance of all tokens and DeFi assets under an account or use says what is the total balance of all the tokens liket that. like that return type is return type return type "total_value" with OHLC data. in this case give token name to "MYS"
+    try {
+      const prompt = PROMPT_TEMPLATES[template].replace("{query}", query);
+      const response = await ai.models.generateContent({
+        model: "gemini-2.0-flash",
+        contents: prompt,
+      });
 
-if related to latest token price or batch or something relarted to new token price then return batch_price as return type with OHLC data.
+      const rawText = response.text;
+      const jsonMatch = rawText.match(/```json\s*([\s\S]*?)\s*```/) || rawText.match(/{[\s\S]*}/);
 
---if related to Retrieve the total balance of all tokens and DeFi assets under an account. like that return type is return type "total_token_balance" with OHLC data.
-
--is related to Query the balance of a specific token under an address.
-return type "specific_token_balance" with OHLC data with token_name and token_name in data.
-
-
-- Candlestick history: return type "candlestick_history" with historical OHLC data.
-- Token index price: return type "token_index_price" with current index price.
-- Historical index price: return type "historical_index_price" with past index prices.
-- Total value: return type "total_value" with aggregated value data.
-- Total token balances: return type "total_token_balances" with aggregated balances.
-- Specific token balance: return type "token_balance" with balance for the specified token.
-- Transaction history by address: return type "transaction_history" with transactions for the given address do not ask for address it passes automatically in backend.
-- Specific transaction details: return type "tx_by_hash" with detailed data for the specified transaction if given by hash.
-
-Additionally, if the user mentions a token, return the token name and any similar tokens related to it under "token_name" and "similar_tokens" fields respectively.
-
-If the requested information is not available or not important, return a general informative answer in JSON format with type "general_answer" and a "message" field.
-
-Please respond only in JSON format following the above rules.
-when you returnning the token  name then only return   ETH,
-  OP,
-  BSC,
-  OKT,
-  SONIC,
-  XLAYER,
-  POLYGON,
-  ARB,
-  AVAX,
-  ZKSYNC
-  POLYZKEVM,
-  BASE,
-  LINEA,
-  FTM,
-  MANTLE,
-  CFX,
-  METIS,
-  MERLIN,
-  BLAST,
-  MANTA,
-  SCROLL,
-  CRO,
-  ZETA,
-  TRON,
-  SOL,
-  SUI,
-  TON,
-these when matches
-if any general query  is asked then pick the above mentioned conditions and find most suitable return the type with data which matches most  from that if it matches and else general answer.
-User Query:
-`;
-
-export async function geminiAgent(userQuery: string): Promise<any> {
-  const prompt = GEMINI_PROMPT_TEMPLATE + userQuery;
-
-  const response: any = await ai.models.generateContent({
-    model: "gemini-2.0-flash",
-    contents: prompt,
-  });
-
-  const rawText = response.text;
-
-  try {
-    // Match JSON inside ```json ... ``` or just extract the first JSON-looking block
-    const jsonMatch = rawText.match(/```json\s*([\s\S]*?)\s*```/) || rawText.match(/{[\s\S]*}/);
-
-    if (jsonMatch) {
-      const jsonString = jsonMatch[1] || jsonMatch[0]; // depending on match type
-      return JSON.parse(jsonString);
-    } else {
-      // If nothing matched, fallback to a general answer type
-      return {
+      if (jsonMatch) {
+        const jsonString = jsonMatch[1] || jsonMatch[0];
+        setResponse(JSON.parse(jsonString));
+      } else {
+        setResponse({
+          type: "general_answer",
+          message: rawText.trim(),
+        });
+      }
+    } catch (error) {
+      console.error("Failed to process Gemini response:", error);
+      setError("Failed to fetch response. Please try again.");
+      setResponse({
         type: "general_answer",
-        message: rawText.trim(),
-      };
+        message: "An error occurred while processing your request.",
+      });
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    console.error("Failed to parse Gemini response:", error);
-    return {
-      type: "general_answer",
-      message: rawText.trim(),
-    };
-  }
+  }, [query, template]);
+
+  return (
+    <div className="container mx-auto p-4">
+      <Card className="max-w-2xl mx-auto">
+        <CardHeader>
+          <h1 className="text-2xl font-bold">DeFi Trading Assistant</h1>
+        </CardHeader>
+        <CardBody>
+          <Select
+            label="Assistant Mode"
+            placeholder="Select mode"
+            value={template}
+            onChange={(e) => setTemplate(e.target.value)}
+            className="mb-4"
+          >
+            <SelectItem value="trading">Trading Assistant</SelectItem>
+            <SelectItem value="portfolio">Portfolio Assistant</SelectItem>
+            <SelectItem value="analytics">Analytics Assistant</SelectItem>
+          </Select>
+          <div className="flex gap-2">
+            <Input
+              placeholder="Enter your DeFi query (e.g., 'ETH price', 'total balance')"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="flex-1"
+            />
+            <Button
+              color="primary"
+              onClick={handleQuery}
+              disabled={loading || !query.trim()}
+            >
+              {loading ? <Spinner size="sm" /> : "Submit"}
+            </Button>
+          </div>
+          {error && <p className="text-red-500 mt-2">{error}</p>}
+          {response && (
+            <div className="mt-4 p-4 bg-gray-100 rounded">
+              <pre className="text-sm overflow-auto">
+                {JSON.stringify(response, null, 2)}
+              </pre>
+            </div>
+          )}
+        </CardBody>
+      </Card>
+    </div>
+  );
 }

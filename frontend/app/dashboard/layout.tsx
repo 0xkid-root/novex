@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
-import { DashboardSidebar } from "@/components/dashboard/sidebar"
+import { DashboardSidebar } from "@/components/Dashboard/sidebar"
 import { ConnectWalletButton } from "@/components/ui/connect-wallet-button"
 import { cn } from "@/lib/utils"
 

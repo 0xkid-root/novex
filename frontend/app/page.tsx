@@ -1,7 +1,7 @@
-import { HeroSection } from "@/components/blocks/hero-section-1"
+import NovexLanding from "@/components/LandingPage/Novex-Landing"
 
 export default function Home() {
   return (
-    <HeroSection />
+    <NovexLanding />
   );
 }

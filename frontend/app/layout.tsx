@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Astra - AI-powered DeFi Trading on Solana",
-  description: "Astra is an intelligent trading assistant that harnesses the power of artificial intelligence and Solana's high-performance blockchain to transform your DeFi experience.",
+  title: "Novex - AI-Driven DeFi Platform on Solana",
+  description: "Novex empowers your DeFi journey with cutting-edge AI and Solana's high-speed blockchain, delivering seamless and intelligent trading solutions.",
 };
 
 export default function RootLayout({

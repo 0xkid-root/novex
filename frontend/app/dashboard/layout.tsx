@@ -1,10 +1,9 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { usePathname } from "next/navigation"
-import { DashboardSidebar } from "@/components/dashboard/sidebar"
-import { ConnectWalletButton } from "@/components/ui/connect-wallet-button"
 import { cn } from "@/lib/utils"
+import { DashboardSidebar } from "@/components/Dashboard/sidebar"
 
 export default function DashboardLayout({
   children,
@@ -19,37 +18,65 @@ export default function DashboardLayout({
     setMounted(true)
   }, [])
 
-  if (!mounted) return null
+  // Derive page title from pathname
+  const pageTitle = useMemo(() => {
+    const path = pathname.split("/").pop() || "dashboard"
+    return path
+      .split("-")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ")
+  }, [pathname])
 
-  // Get page name from pathname
-  
+  // Responsive sidebar state for mobile
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setSidebarOpen(false)
+      } else {
+        setSidebarOpen(true)
+      }
+    }
+    handleResize()
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-slate-900/95 via-purple-900/95 to-slate-900/95">
+        <div className="flex items-center justify-center h-screen">
+          <div className="text-white text-lg">Loading...</div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-slate-900/95 via-purple-900/95 to-slate-900/95 overflow-hidden">
-      {/* Enhanced background with subtle elegant effects */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 animate-pulse"></div>
+      {/* Subtle background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-100/5 to-purple-100/5" />
       
       {/* Refined grid background */}
-      <div className="absolute inset-0 -z-10 h-full w-full bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:32px_32px]"></div>
+      <div className="absolute inset-0 -z-10 h-full w-full bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:24px_24px] md:bg-[size:32px_32px]" />
       
-      {/* Main layout with improved transitions */}
+      {/* Main layout */}
       <div className="flex">
         <DashboardSidebar open={sidebarOpen} setOpen={setSidebarOpen} />
         
-        <div className={cn(
-          "flex-1 transition-all duration-300 min-h-screen",
-          sidebarOpen ? "ml-64" : "ml-16"
-        )}>
+        <div
+          className={cn(
+            "flex-1 transition-all duration-300 min-h-screen",
+            sidebarOpen ? "md:ml-64 ml-0" : "md:ml-16 ml-0"
+          )}
+        >
           
-          
-          <main className="py-10 px-12 t  max-w-[1400px] mx-auto">
+          <main className="py-8 px-4 md:px-12 max-w-[1400px] mx-auto">
             {children}
           </main>
         </div>
       </div>
 
-      {/* Enhanced bottom gradient */}
-      <div className="fixed bottom-0 left-0 right-0 h-20 bg-gradient-to-r from-blue-500/20 to-purple-500/20 pointer-events-none blur-xl"></div>
-    </div>
+   </div>
+
   )
 }

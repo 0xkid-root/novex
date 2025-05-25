@@ -74,7 +74,7 @@ function HistoricalPriceChart({ data, title }: { data: any; title: string }) {
 
   return (
     <div className="w-full animate-in slide-in-from-bottom-4 duration-700">
-      <Card className="w-full bg-gradient-to-br from-slate-900/80 via-purple-900/40 to-slate-900/80 border border-purple-500/30 backdrop-blur-xl shadow-2xl hover:shadow-purple-500/40 transition-all duration-500 hover:border-purple-400/50 group">
+      <Card className="w-full bg-gradient-to-r from-purple-900/80  to-pink-900/80 border border-purple-500/30 backdrop-blur-xl shadow-2xl hover:shadow-purple-500/40 transition-all duration-500 hover:border-purple-400/50 group">
         <CardHeader className="pb-4">
           <CardTitle className="text-white flex items-center gap-3">
             <div className="relative p-3 rounded-xl bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-purple-400/30 group-hover:from-purple-500/30 group-hover:to-blue-500/30 transition-all duration-300">

@@ -48,7 +48,7 @@ export function DashboardSidebar({ open, setOpen }: DashboardSidebarProps) {
     {
       label: "AI Insights",
       icon: Brain,
-      href: "/dashboard/ai-insights",
+      href: "/dashboard/ai-chat",
       gradient: "from-cyan-400 to-blue-500"
     },
     {
@@ -122,14 +122,14 @@ export function DashboardSidebar({ open, setOpen }: DashboardSidebarProps) {
 
   return (
     <motion.div
-      className="fixed h-full bg-gradient-to-b from-slate-900/95 via-purple-900/95 to-slate-900/95 border-r border-white/10 z-20 backdrop-blur-xl shadow-2xl dark:bg-gradient-to-b dark:from-gray-900/95 dark:via-purple-950/95 dark:to-gray-900/95"
+      className="fixed h-full bg-gradient-to-b from-slate-900/95 via-purple-900/95 to-slate-900/95 border-r border-white/10 z-20 backdrop-blur-xl shadow-2xl"
       variants={sidebarVariants}
       animate={open ? "expanded" : "collapsed"}
       initial={false}
     >
       <div className="flex flex-col h-full relative overflow-hidden">
         {/* Animated background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-cyan-500/10 to-pink-500/10 animate-pulse" />
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 animate-pulse" />
 
         {/* Header */}
         <div className="flex items-center justify-between p-5 border-b border-white/10 relative z-10">
@@ -254,7 +254,7 @@ export function DashboardSidebar({ open, setOpen }: DashboardSidebarProps) {
         </div>
 
         {/* User Section */}
-        <div className="p-4 border-t border-white/10 bg-gradient-to-r from-purple-400/10 via-cyan-500/10 to-pink-500/10 relative z-10">
+        <div className="p-4 border-t border-white/10 bg-gradient-to-r from-blue-500/10 to-purple-500/10 relative z-10">
           {/* Back to Home Button */}
           <Link href="/">
             <motion.div

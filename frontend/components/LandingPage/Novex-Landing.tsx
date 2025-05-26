@@ -7,6 +7,8 @@ import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { Menu, X, ArrowRight, Zap, Shield, TrendingUp, BarChart3, Cpu, Globe, Sparkles, ChevronDown, Twitter, Github, Play, Users, Award, Target, Eye, Brain } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import {NovexFooter} from './NovexFooter'
+import { NovextechSection } from './NovexTechSection'
 
 const NovexLanding = () => {
   const [activeSection, setActiveSection] = useState('hero')
@@ -162,7 +164,7 @@ const NovexLanding = () => {
       <FeaturesSection />
 
       {/* Technical Architecture */}
-      <TechSection />
+      <NovextechSection />
 
       {/* Showcase Section */}
       <ShowcaseSection />
@@ -171,7 +173,7 @@ const NovexLanding = () => {
       <TestimonialsSection />
 
       {/* Footer */}
-      <Footer />
+      <NovexFooter />
     </div>
   )
 }
@@ -378,113 +380,7 @@ const FeaturesSection = () => {
   )
 }
 
-const TechSection = () => {
-  const techStack = [
-    { name: "React.js", category: "Frontend", color: "from-blue-500 to-cyan-500" },
-    { name: "TensorFlow", category: "AI Engine", color: "from-orange-500 to-red-500" },
-    { name: "Solana Web3.js", category: "Blockchain", color: "from-purple-500 to-pink-500" },
-    { name: "Ethers.js", category: "Blockchain", color: "from-blue-500 to-indigo-500" },
-    { name: "OKX DEX API", category: "Trading", color: "from-green-500 to-emerald-500" },
-    { name: "Galess Swap", category: "Trading", color: "from-yellow-500 to-orange-500" },
-    { name: "Pyth Network", category: "Data Oracle", color: "from-purple-500 to-blue-500" },
-    { name: "ERC-4337", category: "Wallet", color: "from-pink-500 to-red-500" }
-  ]
 
-  return (
-    <section id="tech" className="py-32 bg-gradient-to-b from-transparent to-purple-900/20 dark:to-gray-900/20">
-      <div className="max-w-7xl mx-auto px-6">
-        <motion.div
-          className="text-center mb-20"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <h2 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-            Technical Architecture
-          </h2>
-          <p className="text-xl text-gray-400 dark:text-gray-300 max-w-3xl mx-auto">
-            Built on cutting-edge technologies for speed, security, and scalability
-          </p>
-        </motion.div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {techStack.map((tech, index) => (
-            <motion.div
-              key={index}
-              className="group relative"
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              whileHover={{ scale: 1.05, rotateY: 15 }}
-            >
-              <div className="bg-white/10 dark:bg-gray-800/30 backdrop-blur-sm border border-white/20 dark:border-gray-700 rounded-2xl p-6 text-center group-hover:border-white/40 dark:group-hover:border-gray-600 transition-all duration-300">
-                <motion.div
-                  className={`w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r ${tech.color} flex items-center justify-center`}
-                  whileHover={{ rotate: 180 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <Cpu className="w-8 h-8 text-white" />
-                </motion.div>
-                
-                <h3 className="text-lg font-bold text-white dark:text-gray-100 mb-2">{tech.name}</h3>
-                <p className="text-sm text-gray-400 dark:text-gray-300">{tech.category}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        <motion.div
-          className="mt-20 bg-white/10 dark:bg-gray-800/30 backdrop-blur-sm border border-purple-500/30 dark:border-gray-700 rounded-3xl p-12"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-        >
-          <div className="grid md:grid-cols-3 gap-8 text-center">
-            <div>
-              <motion.div
-                className="text-4xl font-bold text-purple-400 mb-2"
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ type: "spring", stiffness: 200, delay: 0.5 }}
-              >
-                99.9%
-              </motion.div>
-              <p className="text-gray-300 dark:text-gray-200">Uptime Guarantee</p>
-            </div>
-            <div>
-              <motion.div
-                className="text-4xl font-bold text-blue-400 mb-2"
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ type: "spring", stiffness: 200, delay: 0.7 }}
-              >
-                &lt;100ms
-              </motion.div>
-              <p className="text-gray-300 dark:text-gray-200">Response Time</p>
-            </div>
-            <div>
-              <motion.div
-                className="text-4xl font-bold text-cyan-400 mb-2"
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ type: "spring", stiffness: 200, delay: 0.9 }}
-              >
-                95%
-              </motion.div>
-              <p className="text-gray-300 dark:text-gray-200">AI Accuracy</p>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-    </section>
-  )
-}
 
 const ShowcaseSection = () => {
   return (
@@ -656,97 +552,6 @@ const TestimonialsSection = () => {
   )
 }
 
-const Footer = () => {
-  return (
-    <footer className="py-16 bg-gradient-to-b from-transparent to-purple-900/20 dark:to-gray-900/20 border-t border-white/20 dark:border-gray-700">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid md:grid-cols-4 gap-8">
-          <motion.div
-            className="md:col-span-2"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-sm">N</span>
-              </div>
-              <span className="font-bold text-xl">NOVEX</span>
-            </div>
-            <p className="text-gray-400 dark:text-gray-300 mb-4 max-w-xs">
-              Your AI-driven companion for DeFi trading on Solana and Ethereum, offering unparalleled efficiency and insights.
-            </p>
-            <div className="flex space-x-4">
-              {[
-                { icon: <Twitter className="w-5 h-5" />, href: '#' },
-                { icon: <Github className="w-5 h-5" />, href: '#' },
-                { icon: <X className="w-5 h-5" />, href: '#' }
-              ].map((social, index) => (
-                <motion.a
-                  key={index}
-                  href={social.href}
-                  className="text-gray-400 dark:text-gray-300 hover:text-purple-400 dark:hover:text-purple-300 transition-colors"
-                  whileHover={{ scale: 1.2 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {social.icon}
-                </motion.a>
-              ))}
-            </div>
-          </motion.div>
-          
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            <h3 className="text-sm font-semibold text-white dark:text-gray-100 mb-3">Platform</h3>
-            <ul className="space-y-2 text-sm">
-              {['Features', 'Technology', 'Demo', 'Reviews'].map((item, index) => (
-                <li key={index}>
-                  <Link href={`#${item.toLowerCase()}`} className="text-gray-400 dark:text-gray-300 hover:text-purple-400 dark:hover:text-purple-300 transition-colors">
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            <h3 className="text-sm font-semibold text-white dark:text-gray-100 mb-3">Legal</h3>
-            <ul className="space-y-2 text-sm">
-              {['Privacy Policy', 'Terms of Service', 'Cookie Policy'].map((item, index) => (
-                <li key={index}>
-                  <Link href="#" className="text-gray-400 dark:text-gray-300 hover:text-purple-400 dark:hover:text-purple-300 transition-colors">
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        </div>
-
-        <motion.div
-          className="mt-10 border-t border-white/20 dark:border-gray-700 pt-6"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <p className="text-center text-xs text-gray-400 dark:text-gray-300">
-            © {new Date().getFullYear()} Novex. All rights reserved. Created for the OKX Solana Accelerate Hackathon 2025.
-          </p>
-        </motion.div>
-      </div>
-    </footer>
-  )
-}
 
 export default NovexLanding

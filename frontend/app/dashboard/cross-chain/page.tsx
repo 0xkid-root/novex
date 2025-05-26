@@ -838,7 +838,7 @@ export default function  CrossChainSwapPage(){
   )
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl00 bg-gradient-to-br from-purple-900 via-blue-900 to-blue-900 mx-auto backdrop-blur-lg shadow-xl p-4">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <div>
@@ -859,7 +859,7 @@ export default function  CrossChainSwapPage(){
           <Button
             variant="outline"
             size="sm"
-            className="border-white/20 hover:bg-white/10 text-white gap-2"
+            className="border-white/20 bg-black hover:bg-white/10 text-white gap-2"
             onClick={() => setShowSupportedPairs(!showSupportedPairs)}
             disabled={supportedPairs.length === 0}
           >
@@ -869,7 +869,7 @@ export default function  CrossChainSwapPage(){
           <Button
             variant="outline"
             size="icon"
-            className="rounded-full border-white/20 hover:bg-white/10 text-white"
+            className="rounded-full bg-black border-white/20 hover:bg-white/10 text-white"
             onClick={handleRefreshData}
             disabled={isLoading || rateLimitInfo.isRateLimited}
           >
@@ -1246,8 +1246,8 @@ export default function  CrossChainSwapPage(){
 
       {/* Supported Pairs Modal */}
       {showSupportedPairs && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
-          <div className="bg-black/90 rounded-xl shadow-2xl border border-white/20 relative max-w-6xl w-full mx-4 max-h-[80vh] overflow-hidden">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-purple-900 via-blue-900 backdrop-blur-sm">
+          <div className="bg-gradient-to-br from-purple-900 via-blue-900 rounded-xl shadow-2xl border border-white/20 relative max-w-6xl w-full mx-4 max-h-[80vh] overflow-hidden">
             <div className="p-6 border-b border-white/10">
               <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold bg-gradient-to-r from-white to-white/80 text-transparent bg-clip-text">
@@ -1447,11 +1447,6 @@ export default function  CrossChainSwapPage(){
         </Card>
       )}
 
-      <div className="mt-5 text-center">
-        <p className="text-xs text-white/40">
-          Powered by OKX Cross-Chain Bridge Aggregator. Secure multi-chain token transfers.
-        </p>
-      </div>
     </div>
   )
 }

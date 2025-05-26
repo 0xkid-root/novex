@@ -598,7 +598,7 @@ export default function EnhancedSolanaSwap() {
             >
               {loadingTokens
                 ? "Loading supported tokens..."
-                : `Trade tokens on Solana with best rates • ${availableTokens.length} tokens available`}
+                : `A user-friendly Solana DEX with low fees and efficient token swaps • ${availableTokens.length} tokens available`}
             </motion.p>
           </div>
           <motion.div
@@ -611,7 +611,7 @@ export default function EnhancedSolanaSwap() {
               <Button
                 variant="outline"
                 size="icon"
-                className="rounded-full border-white/20 hover:bg-white/10 text-white backdrop-blur-sm"
+                className="rounded-full border-white/20 bg-blue-900/20 hover:bg-white/10 text-white backdrop-blur-sm"
                 onClick={handleRetryTokens}
                 disabled={loadingTokens || isRequestInProgress}
               >
@@ -620,24 +620,7 @@ export default function EnhancedSolanaSwap() {
                 </motion.div>
               </Button>
             </motion.div>
-            <motion.div variants={buttonVariants} initial="idle" whileHover="hover" whileTap="tap">
-              <Button
-                variant="outline"
-                size="icon"
-                className="rounded-full border-white/20 hover:bg-white/10 text-white backdrop-blur-sm"
-              >
-                <Clock className="h-5 w-5" />
-              </Button>
-            </motion.div>
-            <motion.div variants={buttonVariants} initial="idle" whileHover="hover" whileTap="tap">
-              <Button
-                variant="outline"
-                size="icon"
-                className="rounded-full border-white/20 hover:bg-white/10 text-white backdrop-blur-sm"
-              >
-                <Settings className="h-5 w-5" />
-              </Button>
-            </motion.div>
+            
           </motion.div>
         </motion.div>
 
@@ -682,7 +665,7 @@ export default function EnhancedSolanaSwap() {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="border-white/20 hover:bg-white/10 text-white text-xs h-7 backdrop-blur-sm"
+                    className="border-white/20 bg-blue-900/20 hover:bg-white/10 text-white text-xs h-7 backdrop-blur-sm"
                     onClick={() => {
                       setFromAmount("1.0")
                       setSwapResult(null)
@@ -812,7 +795,7 @@ export default function EnhancedSolanaSwap() {
                       <Button
                         variant="outline"
                         size="sm"
-                        className={`h-7 px-2.5 py-1 border-white/20 text-white text-xs backdrop-blur-sm ${
+                        className={`h-7 px-2.5 py-1 border-white/20 bg-blue-900/20 text-white text-xs backdrop-blur-sm ${
                           slippage === value
                             ? "bg-gradient-to-r from-purple-500/30 to-blue-500/30 border-purple-500/50"
                             : "hover:bg-white/10"
@@ -873,7 +856,7 @@ export default function EnhancedSolanaSwap() {
             animate={quoting ? "loading" : "idle"}
           >
             <Button
-              className="py-6 text-sm gap-2 bg-gradient-to-r from-purple-500/30 to-blue-500/30 hover:from-purple-500/40 hover:to-blue-500/40 border border-purple-500/40 hover:border-purple-500/60 text-white shadow-lg backdrop-blur-sm"
+              className="py-6 text-sm gap-2 bg-gradient-to-br from-purple-900 via-blue-900 hover:from-purple-500/40 hover:to-blue-500/40 border border-purple-500/40 hover:border-purple-500/60 text-white shadow-lg backdrop-blur-sm"
               size="lg"
               onClick={handleGetQuote}
               disabled={quoting || !fromAmount || Number.parseFloat(fromAmount) <= 0}
@@ -885,25 +868,7 @@ export default function EnhancedSolanaSwap() {
             </Button>
           </motion.div>
 
-          <motion.div
-            variants={buttonVariants}
-            initial="idle"
-            whileHover="hover"
-            whileTap="tap"
-            animate={loading ? "loading" : "idle"}
-          >
-            <Button
-              className="py-6 text-sm gap-2 bg-gradient-to-r from-blue-500/30 to-cyan-500/30 hover:from-blue-500/40 hover:to-cyan-500/40 border border-blue-500/40 hover:border-blue-500/60 text-white shadow-lg backdrop-blur-sm"
-              size="lg"
-              onClick={handleGetSwapInstructions}
-              disabled={loading || !fromAmount || Number.parseFloat(fromAmount) <= 0}
-            >
-              <motion.div variants={iconVariants} animate={loading ? "spin" : "idle"}>
-                <Zap className="h-4 w-4" />
-              </motion.div>
-              {loading ? "Loading..." : "Instructions"}
-            </Button>
-          </motion.div>
+
 
           <motion.div
             variants={buttonVariants}
@@ -913,7 +878,7 @@ export default function EnhancedSolanaSwap() {
             animate={executing ? "loading" : "idle"}
           >
             <Button
-              className="py-6 text-sm gap-2 bg-gradient-to-r from-green-500/30 to-emerald-500/30 hover:from-green-500/40 hover:to-emerald-500/40 border border-green-500/40 hover:border-green-500/60 text-white shadow-lg backdrop-blur-sm"
+              className="py-6 text-sm gap-2 bg-gradient-to-br from-purple-900 via-blue-900 hover:from-purple-500/40 hover:to-emerald-500/40 border border-green-500/40 hover:border-green-500/60 text-white shadow-lg backdrop-blur-sm"
               size="lg"
               onClick={handleExecuteSwap}
               disabled={executing || !fromAmount || Number.parseFloat(fromAmount) <= 0}

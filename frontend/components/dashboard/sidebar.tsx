@@ -71,12 +71,6 @@ export function DashboardSidebar({ open, setOpen }: DashboardSidebarProps) {
       href: "/dashboard/portfolio",
       gradient: "from-purple-500 to-cyan-400"
     },
-    {
-      label: "Settings",
-      icon: Settings,
-      href: "/dashboard/settings",
-      gradient: "from-gray-400 to-purple-600"
-    }
   ]
 
   const copyWalletAddress = async () => {

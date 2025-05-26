@@ -5,6 +5,10 @@ Entry for OKX Hackathon
 Novex is an AI-driven DeFi trading assistant crafted for Solana and Ethereum, aimed at simplifying and enhancing decentralized trading. By harnessing TensorFlow-powered AI, ERC-4337 account abstraction, and integrations with OKX DEX API and Galess Swap API, Novex provides a fluid, efficient, and user-focused trading platform.
 Serving as your dedicated DeFi guide, Novex empowers users with sophisticated trading strategies, intelligent portfolio management, and streamlined trade execution with minimal hassle.
 
+## 🎥 Presentation
+
+View our detailed project presentation and documentation [here](https://drive.google.com/drive/folders/1ZC1Bw-bmC6KM3a7ru9DFAeexeno_dUlh?usp=sharing).
+
 🌟 Main Features
 
 🤖 AI-Supported TradingTensorFlow models deliver real-time trade entry and exit suggestions based on market patterns.

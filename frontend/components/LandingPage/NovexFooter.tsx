@@ -54,7 +54,7 @@ export const NovexFooter = () => {
             >
               <h3 className="text-sm font-semibold text-white dark:text-gray-100 mb-3">Platform</h3>
               <ul className="space-y-2 text-sm">
-                {['Features', 'Technology', 'Demo', 'Reviews'].map((item, index) => (
+                {['Explore', 'Technology', 'Demo', 'Support'].map((item, index) => (
                   <li key={index}>
                     <Link href={`#${item.toLowerCase()}`} className="text-gray-400 dark:text-gray-300 hover:text-purple-400 dark:hover:text-purple-300 transition-colors">
                       {item}

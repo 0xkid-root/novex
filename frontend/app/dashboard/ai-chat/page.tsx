@@ -3,8 +3,8 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Send, Bot, User, Zap, RefreshCw, ChevronDown, Activity, Clock, TrendingUp, TrendingDown, BarChart3, Brain, Sparkles, X } from "lucide-react"
-import { geminiAgent } from "./GeminiAgent"
-import { extractImportantInfoFromData } from "./Gemini2Agent"
+import { NovexAgent } from "./NovexAgent"
+import { extractNovexImportantFromData } from "./Novex2Agent"
 import { useWallet } from "@/contexts/WalletContext"
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from "recharts"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -782,12 +782,13 @@ Volume: ${item.volume.toLocaleString()}`}
 }
 
 const suggestions = [
-  "Show me my transaction history",
-  "What are my recent transactions?",
-  "Explain the current SOL market conditions",
-  "What's the best DeFi strategy for beginners?",
-  "How to minimize transaction fees?",
-]
+  "View my recent transaction history",
+  "List my latest transactions",
+  "Summarize the current Solana (SOL) market trends",
+  "What's a beginner-friendly DeFi investment strategy?",
+  "Tips for reducing transaction fees",
+];
+
 
 export default function AiChatPage() {
   const { publicKey }: any = useWallet()
@@ -812,7 +813,7 @@ export default function AiChatPage() {
 
     try {
       // Call Gemini API
-      const geminiResponse: GeminiResponse = await geminiAgent(input)
+      const geminiResponse: GeminiResponse = await NovexAgent(input)
       console.log("Gemini Response:", geminiResponse)
 
       // Process the response
@@ -886,7 +887,7 @@ export default function AiChatPage() {
                 geminiResponse.text ||
                 `Here's the information about ${geminiResponse.token_name}: ${JSON.stringify(marketData)}`
 
-              const aiMessage: string = await extractImportantInfoFromData(formattedResponse)
+              const aiMessage: string = await extractNovexImportantFromData(formattedResponse)
 
               setMessages((prev) => [...prev, { role: "system", content: aiMessage }])
             }
@@ -905,7 +906,7 @@ export default function AiChatPage() {
       } else {
         // Show Gemini response if no actionable data
         const responseText = geminiResponse.text || JSON.stringify(geminiResponse)
-        const aiMessage: string = await extractImportantInfoFromData(responseText)
+        const aiMessage: string = await extractNovexImportantFromData(responseText)
         console.log("my ai messages are::::" + aiMessage)
         setMessages((prev) => [...prev, { role: "system", content: aiMessage }])
       }

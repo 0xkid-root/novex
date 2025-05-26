@@ -56,7 +56,7 @@ if it is general msg then return the message only not general information writte
  * @param data - The input data object to extract info from.
  * @returns The concise user prompt string containing extracted important info.
  */
-export async function extractImportantInfoFromData(data: any): Promise<string> {
+export async function extractNovexImportantFromData(data: any): Promise<string> {
   const prompt = `${IMPORTANT_INFO_PROMPT}\n\nInput:\n${JSON.stringify(data, null, 2)}\n\nOutput:`;
 
   try {

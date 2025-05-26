@@ -7,7 +7,7 @@ import { Send, Bot, User, Zap, RefreshCw, Sparkles, TrendingUp, TrendingDown, Ba
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import {extractImportantInfoFromData} from "./Gemini2Agent"
+import {extractImportantInfoFromData} from "./Novex2Agent"
 
 
 // Initialize GoogleGenAI

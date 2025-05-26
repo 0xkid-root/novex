@@ -89,7 +89,7 @@ IMPORTANT FOR TRANSACTION HISTORY: Always use "SOL" as token_name for transactio
 User Query:
 `;
 
-export async function geminiAgent(userQuery: string): Promise<any> {
+export async function NovexAgent(userQuery: string): Promise<any> {
   
   const prompt = GEMINI_PROMPT_TEMPLATE + userQuery;
 

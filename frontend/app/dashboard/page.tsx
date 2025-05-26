@@ -3,6 +3,11 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { motion, AnimatePresence, useAnimation } from "framer-motion"
+import dynamic from 'next/dynamic'
+
+const ReactApexChart = dynamic(() => import('react-apexcharts'), {
+  ssr: false
+})
 
 import {
   ArrowRight,
@@ -128,6 +133,9 @@ const quickActions = [
     href: "/dashboard/ai-chat",
     gradientFrom: "#8B5CF6",
     gradientTo: "#6366F1",
+    gradient: "from-purple-400 via-pink-500 to-purple-600",
+    hoverGradient: "from-purple-300 via-pink-400 to-purple-500",
+    shadowColor: "shadow-purple-500/25",
   },
   {
     id: "swap",
@@ -136,6 +144,9 @@ const quickActions = [
     href: "/dashboard/swap",
     gradientFrom: "#EC4899",
     gradientTo: "#F43F5E",
+    gradient: "from-emerald-400 via-teal-500 to-blue-500",
+    hoverGradient: "from-emerald-300 via-teal-400 to-blue-400",
+    shadowColor: "shadow-emerald-500/25",
   },
   {
     id: "portfolio",
@@ -144,6 +155,9 @@ const quickActions = [
     href: "/dashboard/portfolio",
     gradientFrom: "#F59E0B",
     gradientTo: "#EF4444",
+    gradient: "from-orange-400 via-red-500 to-pink-500",
+    hoverGradient: "from-orange-300 via-red-400 to-pink-400",
+    shadowColor: "shadow-orange-500/25",
   },
   {
     id: "settings",
@@ -152,6 +166,9 @@ const quickActions = [
     href: "/dashboard/settings",
     gradientFrom: "#10B981",
     gradientTo: "#059669",
+    gradient: "from-violet-400 via-purple-500 to-indigo-600",
+    hoverGradient: "from-violet-300 via-purple-400 to-indigo-500",
+    shadowColor: "shadow-violet-500/25",
   },
 ]
 
@@ -353,78 +370,138 @@ function SolanaMarketChart({ data, title }: { data: MarketData; title: string })
 
   const chartData = data.data[0].prices
     .map((item: any) => ({
-      time: formatTimestamp(item.time),
-      price: Number(item.price),
-      timestamp: Number(item.time),
+      x: new Date(Number(item.time)),
+      y: [Number(item.open || item.price), 
+         Number(item.high || item.price), 
+         Number(item.low || item.price), 
+         Number(item.close || item.price)]
     }))
     .reverse()
     .slice(-24) // Show last 24 data points
 
-  const currentPrice = chartData[chartData.length - 1]?.price || 0
-  const previousPrice = chartData[chartData.length - 2]?.price || 0
+  const currentPrice = chartData[chartData.length - 1]?.y[3] || 0
+  const previousPrice = chartData[chartData.length - 2]?.y[3] || 0
   const priceChange = currentPrice - previousPrice
   const isPositive = priceChange >= 0
+  const percentChange = ((priceChange / previousPrice) * 100).toFixed(2)
+
+  const options = {
+    chart: {
+      type: "candlestick" as const,
+      height: 250,
+      toolbar: {
+        show: false
+      },
+      background: 'transparent',
+      animations: {
+        enabled: true
+      }
+    },
+    plotOptions: {
+      candlestick: {
+        colors: {
+          upward: '#22c55e',
+          downward: '#ef4444'
+        },
+        wick: {
+          useFillColor: true
+        }
+      }
+    },
+    xaxis: {
+      type: 'datetime',
+      labels: {
+        style: {
+          colors: '#fff'
+        },
+        datetimeFormatter: {
+          year: 'yyyy',
+          month: 'MMM \'yy',
+          day: 'dd MMM',
+          hour: 'HH:mm'
+        }
+      },
+      axisBorder: {
+        color: 'rgba(255,255,255,0.2)'
+      },
+      axisTicks: {
+        color: 'rgba(255,255,255,0.2)'
+      }
+    },
+    yaxis: {
+      labels: {
+        style: {
+          colors: '#fff'
+        },
+        formatter: (value: number) => `$${value.toFixed(2)}`
+      },
+      axisBorder: {
+        color: 'rgba(255,255,255,0.2)'
+      },
+      axisTicks: {
+        color: 'rgba(255,255,255,0.2)'
+      }
+    },
+    grid: {
+      borderColor: 'rgba(255,255,255,0.1)',
+      xaxis: {
+        lines: {
+          show: true,
+          color: 'rgba(255,255,255,0.1)'
+        }
+      }
+    },
+    tooltip: {
+      theme: 'dark',
+      x: {
+        formatter: (val: any) => formatTimestamp(val)
+      },
+      y: {
+        formatter: (val: any) => `$${formatPrice(val)}`
+      }
+    }
+  }
+
+  const series = [{
+    data: chartData
+  }]
 
   return (
-    <Card className="w-full bg-black/40 border-white/20 backdrop-blur-sm">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-white flex items-center gap-2">
-          <BarChart3 className="h-5 w-5" />
-          {title}
-        </CardTitle>
-        <div className="flex items-center gap-2">
-          <span className="text-2xl font-bold text-white">${formatPrice(currentPrice)}</span>
-          <span className={`flex items-center gap-1 text-sm ${isPositive ? "text-green-400" : "text-red-400"}`}>
+    <Card className="w-full h-full bg-black/40 border-white/20 backdrop-blur-sm hover:bg-black/50 transition-all duration-300">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-white flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <BarChart3 className="h-5 w-5" />
+            {title}
+          </div>
+          <motion.div
+            initial={false}
+            animate={{
+              backgroundColor: isPositive ? "rgba(34, 197, 94, 0.2)" : "rgba(239, 68, 68, 0.2)",
+            }}
+            className={`px-2 py-1 rounded-full flex items-center gap-1 text-sm ${isPositive ? "text-green-400" : "text-red-400"} border ${isPositive ? "border-green-400/20" : "border-red-400/20"}`}
+          >
             {isPositive ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
+            {isPositive ? "+" : ""}{percentChange}%
+          </motion.div>
+        </CardTitle>
+        <div className="flex items-center gap-3 mt-2">
+          <span className="text-3xl font-bold text-white font-mono">${formatPrice(currentPrice)}</span>
+          <span className={`flex items-center gap-1 text-sm ${isPositive ? "text-green-400" : "text-red-400"} font-medium`}>
             {isPositive ? "+" : ""}
-            {formatPrice(priceChange)}
+            ${formatPrice(priceChange)}
           </span>
         </div>
       </CardHeader>
-      <CardContent>
-        <ChartContainer
-          config={{
-            price: {
-              label: "Price",
-              color: "hsl(var(--chart-1))",
-            },
-          }}
-          className="h-[200px]"
-        >
-          <ResponsiveContainer width="100%" height="100%">
-            <RechartsLineChart data={chartData}>
-              <XAxis
-                dataKey="time"
-                tick={{ fill: "white", fontSize: 10 }}
-                axisLine={{ stroke: "rgba(255,255,255,0.2)" }}
-                tickLine={{ stroke: "rgba(255,255,255,0.2)" }}
-              />
-              <YAxis
-                tick={{ fill: "white", fontSize: 10 }}
-                axisLine={{ stroke: "rgba(255,255,255,0.2)" }}
-                tickLine={{ stroke: "rgba(255,255,255,0.2)" }}
-                domain={["dataMin - 0.01", "dataMax + 0.01"]}
-              />
-              <ChartTooltip
-                content={<ChartTooltipContent />}
-                contentStyle={{
-                  backgroundColor: "rgba(0,0,0,0.8)",
-                  border: "1px solid rgba(255,255,255,0.2)",
-                  borderRadius: "8px",
-                  color: "white",
-                }}
-              />
-              <Line
-                type="monotone"
-                dataKey="price"
-                stroke="#9333ea"
-                strokeWidth={2}
-                dot={false}
-                activeDot={{ r: 4, fill: "#9333ea" }}
-              />
-            </RechartsLineChart>
-          </ResponsiveContainer>
-        </ChartContainer>
+      <CardContent className="pb-6">
+        <div className="h-[250px]">
+          <ReactApexChart
+            options={{...options, xaxis: {...options.xaxis, type: 'datetime' as const}}}
+            series={series}
+            type="candlestick"
+            height={250}
+          />
+        </div>
       </CardContent>
     </Card>
   )
@@ -1072,7 +1149,7 @@ export default function DashboardPage() {
             <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-blue-500/5 to-purple-500/5" />
             <CardHeader className="relative z-10">
               <CardTitle className="text-xl font-bold bg-gradient-to-r from-white to-purple-200 text-transparent bg-clip-text">
-                Quick Actions
+              Smart Actions
               </CardTitle>
             </CardHeader>
             <CardContent className="relative z-10">

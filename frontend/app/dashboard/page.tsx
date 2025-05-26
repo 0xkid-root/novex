@@ -16,7 +16,6 @@ import {
   Sparkles,
   TrendingUp,
   CreditCard,
-  Settings,
   ChevronDown,
   RefreshCw,
   BarChart3,
@@ -159,17 +158,7 @@ const quickActions = [
     hoverGradient: "from-orange-300 via-red-400 to-pink-400",
     shadowColor: "shadow-orange-500/25",
   },
-  {
-    id: "settings",
-    label: "Settings",
-    icon: Settings,
-    href: "/dashboard/settings",
-    gradientFrom: "#10B981",
-    gradientTo: "#059669",
-    gradient: "from-violet-400 via-purple-500 to-indigo-600",
-    hoverGradient: "from-violet-300 via-purple-400 to-indigo-500",
-    shadowColor: "shadow-violet-500/25",
-  },
+
 ]
 
 // Real Solana address for data fetching
@@ -915,7 +904,7 @@ export default function DashboardPage() {
             <div className="relative">
               <Button
                 variant="outline"
-                className="border-white/20 hover:bg-white/10 text-white gap-2"
+                className="border-white/20 bg-blue-900/20 hover:bg-white/10 text-white gap-2"
                 onClick={() => setShowChainDropdown(!showChainDropdown)}
                 disabled={loading}
               >
@@ -951,7 +940,7 @@ export default function DashboardPage() {
             <Button
               variant="outline"
               size="icon"
-              className="border-white/20 hover:bg-white/10 text-white"
+              className="border-white/20 bg-blue-900/20 hover:bg-white/10 text-white"
               onClick={handleRefresh}
               disabled={loading}
             >
@@ -1194,10 +1183,10 @@ export default function DashboardPage() {
               Active Token Holdings ({tokenAssets.length})
             </CardTitle>
             <div className="flex space-x-2">
-              <Button variant="outline" size="sm" className="border-white/20 hover:bg-white/10 text-white">
+              <Button variant="outline" size="sm" className="border-white/20 bg-blue-900/20 hover:bg-white/10 text-white">
                 Value
               </Button>
-              <Button variant="outline" size="sm" className="border-white/20 bg-white/10 text-white">
+              <Button variant="outline" size="sm" className="border-white/20 bg-blue-900/20 bg-white/10 text-white">
                 Balance
               </Button>
             </div>

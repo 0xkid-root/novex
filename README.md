@@ -1,15 +1,16 @@
-Novex: AI-Enhanced DeFi Trading Companion for Solana and Ethereum
+# Novex: AI-Enhanced DeFi Trading Companion for Solana and Ethereum
 Entry for OKX Hackathon
 
-🚀 Project Summary
+## 🚀 Project Summary
 Novex is an AI-driven DeFi trading assistant crafted for Solana and Ethereum, aimed at simplifying and enhancing decentralized trading. By harnessing TensorFlow-powered AI, ERC-4337 account abstraction, and integrations with OKX DEX API and Galess Swap API, Novex provides a fluid, efficient, and user-focused trading platform.
+
 Serving as your dedicated DeFi guide, Novex empowers users with sophisticated trading strategies, intelligent portfolio management, and streamlined trade execution with minimal hassle.
 
 ## 🎥 Presentation
 
 View our detailed project presentation and documentation [here](https://drive.google.com/drive/folders/1ZC1Bw-bmC6KM3a7ru9DFAeexeno_dUlh?usp=sharing).
 
-🌟 Main Features
+## 🌟 Main Features
 
 🤖 AI-Supported TradingTensorFlow models deliver real-time trade entry and exit suggestions based on market patterns.
 
@@ -29,29 +30,53 @@ View our detailed project presentation and documentation [here](https://drive.go
 
 
 
-🏗️ Technical Structure
-Frontend
+## 🏗️ Technical Architecture
 
-Built with React.js and Tailwind CSS for a modern, user-friendly interface
+### Frontend
+- **Framework**: React.js with Tailwind CSS
+- **State Management**: Redux for global state
+- **UI Components**: Custom components with Material-UI integration
 
-AI Engine
+### AI Engine
+- **Core**: TensorFlow.js for browser-based inference
+- **Models**: 
+  - Price prediction using LSTM networks
+  - Sentiment analysis with NLP transformers
+  - Portfolio optimization algorithms
 
-TensorFlow models for predictive trade signals and sentiment analysis
+### Blockchain Integration
+#### Solana
+- **SDK**: @solana/web3.js v1.xx
+- **Features**:
+  - High-speed transaction processing
+  - Program interaction
+  - Account management
 
-Blockchain Integration
+#### Ethereum
+- **Library**: ethers.js v6.xx
+- **Features**:
+  - ERC-4337 wallet operations
+  - Smart contract interaction
+  - Gas optimization
 
-Solana: Uses @solana/web3.js for rapid transaction processing
-Ethereum: Leverages ethers.js for Ethereum operations and ERC-4337 compatibility
+### Data & APIs
+- **OKX DEX API**: 
+  - Real-time price feeds
+  - Order routing optimization
+  - Liquidity aggregation
+- **Galess Swap API**:
+  - Cross-DEX integration
+  - Best price discovery
+- **Pyth Network**: 
+  - Price oracle integration
+  - Real-time market data
 
-Data & APIs
-
-OKX DEX API: Provides access to extensive liquidity and efficient swap routing
-Galess Swap API: Enables cross-DEX liquidity aggregation
-Pyth Network: Supplies fast, accurate price oracles
-
-Account Abstraction
-
-Implements ERC-4337 for gasless and programmable wallet functionality
+### Account Abstraction
+- **Standard**: ERC-4337 implementation
+- **Features**:
+  - Gasless transactions
+  - Programmable account rules
+  - Multi-signature support
 
 
 📈 Practical Applications
@@ -85,11 +110,61 @@ AI-Powered Decisions: Merges TensorFlow insights with real-time data for precise
 Cross-Chain Capabilities: Combines Ethereum’s DeFi ecosystem with Solana’s high-speed performance.
 
 
-🙏 Credits
+## 🛠 Development Setup
 
-OKX DEX Team: For their robust API enabling seamless cross-DEX trading.
-Solana Foundation: For providing a high-performance blockchain for DeFi.
-Galess Swap Team: For their innovative liquidity aggregation solutions.
-Ethereum Community: For pioneering ERC-4337 and smart wallet advancements.
-Solana Accelerate Hackathon: For fostering innovation in cross-chain DeFi.
+### Prerequisites
+```bash
+Node.js >= 16.x
+Yarn or npm
+Solana CLI tools
+```
+
+### Installation
+1. Clone the repository
+```bash
+git clone https://github.com/your-username/novex.git
+cd novex
+```
+
+2. Install dependencies
+```bash
+yarn install # or npm install
+```
+
+3. Configure environment
+```bash
+cp .env.example .env
+# Edit .env with your API keys and configuration
+```
+
+4. Start development server
+```bash
+yarn dev # or npm run dev
+```
+
+### Testing
+```bash
+yarn test # Run unit tests
+yarn test:e2e # Run end-to-end tests
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 🙏 Credits
+
+- **OKX DEX Team**: For their robust API enabling seamless cross-DEX trading
+- **Solana Foundation**: For providing a high-performance blockchain for DeFi
+- **Galess Swap Team**: For their innovative liquidity aggregation solutions
+- **Ethereum Community**: For pioneering ERC-4337 and smart wallet advancements
+- **Solana Accelerate Hackathon**: For fostering innovation in cross-chain DeFi
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
